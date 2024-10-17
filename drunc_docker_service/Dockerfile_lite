@@ -1,0 +1,16 @@
+FROM python:3.11-slim-bookworm
+
+RUN apt-get update \
+  && apt-get -y install --no-install-recommends git ssh openssh-server \
+  && rm -fr /var/lib/apt/lists/*
+
+COPY lite_requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
+
+COPY process-manager-kafka.json /
+
+# setup ssh server config and keys
+ADD ssh-setup.sh /
+RUN bash /ssh-setup.sh
+
+RUN mkdir -p /usr/src/app

@@ -14,10 +14,28 @@ services:
       - db:/usr/src/app/db
     environment:
       - PROCESS_MANAGER_URL=drunc:10054
-    depends_on:
-      - drunc
   drunc:
     build: ./drunc_docker_service/
+    profiles:
+      - drunc
+    command:
+      - bash
+      - -c
+      - |
+        /usr/sbin/sshd &&
+        drunc-process-manager --log-level debug file:///process-manager-kafka.json
+    expose:
+      - 10054
+    depends_on:
+      kafka:
+        condition: service_healthy
+  drunc-lite:
+    build:
+      context: ./drunc_docker_service/
+      dockerfile: ./Dockerfile_lite
+    container_name: drunc
+    profiles:
+      - drunc-lite
     command:
       - bash
       - -c
