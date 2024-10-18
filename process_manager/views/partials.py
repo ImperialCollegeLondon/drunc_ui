@@ -96,10 +96,17 @@ def process_table(request: HttpRequest) -> HttpResponse:
 @login_required
 def messages(request: HttpRequest) -> HttpResponse:
     """Renders Kafka messages from the database."""
+    search = request.GET.get("search", "").lower()
+
     messages = []
     for msg in DruncMessage.objects.all():
+        # Filter messages based on search parameter.
+        if search not in msg.message.lower():
+            continue
+
         # Time is stored as UTC. localtime(t) converts this to our configured timezone.
         timestamp = localtime(msg.timestamp).strftime("%Y-%m-%d %H:%M:%S")
+
         messages.append(f"{timestamp}: {msg.message}")
 
     return render(
