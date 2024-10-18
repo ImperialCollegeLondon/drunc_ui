@@ -83,6 +83,41 @@ class TestMessagesView(LoginRequiredTest):
         t2_str = t2.strftime("%Y-%m-%d %H:%M:%S")
         assert response.context["messages"][0] == f"{t2_str}: message 1"
 
+    def test_get_with_search(self, auth_client):
+        """Tests message filtering of view method."""
+        from datetime import UTC, datetime
+
+        from main.models import DruncMessage
+
+        t = datetime.now(tz=UTC)
+        t_str = t.strftime("%Y-%m-%d %H:%M:%S")
+        her_msg = "her message"
+        his_msg = "HIs meSsaGe"
+        DruncMessage.objects.bulk_create(
+            [
+                DruncMessage(timestamp=t, message=her_msg),
+                DruncMessage(timestamp=t, message=his_msg),
+            ]
+        )
+
+        # search for "his message"
+        response = auth_client.get(self.endpoint, data={"search": "his message"})
+        assert response.status_code == HTTPStatus.OK
+        assert len(response.context["messages"]) == 1
+        assert response.context["messages"][0] == f"{t_str}: {his_msg}"
+
+        # search for "MESS"
+        response = auth_client.get(self.endpoint, data={"search": "MESS"})
+        assert response.status_code == HTTPStatus.OK
+        assert len(response.context["messages"]) == 2
+        assert response.context["messages"][0] == f"{t_str}: {his_msg}"
+        assert response.context["messages"][1] == f"{t_str}: {her_msg}"
+
+        # search for "not there"
+        response = auth_client.get(self.endpoint, data={"search": "not there"})
+        assert response.status_code == HTTPStatus.OK
+        assert len(response.context["messages"]) == 0
+
 
 process_1 = {
     "uuid": "1",

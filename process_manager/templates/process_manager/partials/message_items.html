@@ -1,5 +1,3 @@
-<div hx-get="{% url 'process_manager:messages' %}"
-     hx-trigger="load delay:1s"
-     hx-swap="outerHTML">
+<ul class="list-group">
   {% for message in messages %}<li class="list-group-item">{{ message }}</li>{% endfor %}
-</div>
+</ul>
