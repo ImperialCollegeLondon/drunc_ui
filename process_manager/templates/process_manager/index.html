@@ -53,14 +53,12 @@
                type="search"
                name="search"
                placeholder="Search..."
-               hx-get="{% url 'process_manager:process_table' %}"
                hx-trigger="input changed delay:500ms, every 1s"
-               hx-target="div.table-container"
-               hx-swap="innerHTML">
+               hx-get="{% url 'process_manager:process_table' %}"
+               hx-target="div.table-container">
         <div id="table-container"
-             hx-get="{% url 'process_manager:process_table' %}"
-             hx-swap="innerHTML"
-             hx-trigger="load"></div>
+             hx-trigger="load"
+             hx-get="{% url 'process_manager:process_table' %}"></div>
       </form>
     </div>
     <div class="col" id="message-panel">
@@ -73,13 +71,10 @@
                   aria-label="Hide Messages"
                   _="on click hide #message-panel show #show-messages-button"></button>
         </div>
-        <div class="card-body" id="message-list">
-          <ul class="list-group">
-            <div hx-get="{% url 'process_manager:messages' %}"
-                 hx-swap="outerHTML"
-                 hx-trigger="load"></div>
-          </ul>
-        </div>
+        <div id="message-list"
+             class="card-body"
+             hx-trigger="load, every 1s"
+             hx-get="{% url 'process_manager:messages' %}"></div>
       </div>
     </div>
   </div>
