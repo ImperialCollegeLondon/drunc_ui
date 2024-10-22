@@ -21,5 +21,6 @@ class User(AbstractUser):
 class DruncMessage(models.Model):
     """Model for drunc broadcast messages."""
 
+    topic = models.CharField(max_length=255)
     timestamp = models.DateTimeField()
     message = models.TextField()

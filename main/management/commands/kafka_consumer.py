@@ -24,35 +24,33 @@ class Command(BaseCommand):
     def handle(self, debug: bool = False, **kwargs: Any) -> None:  # type: ignore[misc]
         """Command business logic."""
         consumer = KafkaConsumer(bootstrap_servers=[settings.KAFKA_ADDRESS])
-        consumer.subscribe(pattern="control.*.process_manager")
+        consumer.subscribe(pattern="^(control.*.process_manager|erskafka-reporting)")
         # TODO: determine why the below doesn't work
         # consumer.subscribe(pattern="control.no_session.process_manager")
 
         self.stdout.write("Listening for messages from Kafka.")
         while True:
             for messages in consumer.poll(timeout_ms=500).values():
-                message_timestamps = []
-                message_bodies = []
+                message_records = []
+
                 for message in messages:
                     if debug:
                         self.stdout.write(f"Message received: {message}")
                         self.stdout.flush()
 
                     # Convert Kafka timestamp (milliseconds) to datetime (seconds).
-                    timestamp = datetime.fromtimestamp(message.timestamp / 1e3, tz=UTC)
-                    message_timestamps.append(timestamp)
+                    time = datetime.fromtimestamp(message.timestamp / 1e3, tz=UTC)
 
                     bm = BroadcastMessage()
                     bm.ParseFromString(message.value)
-                    message_bodies.append(bm.data.value.decode("utf-8"))
+                    body = bm.data.value.decode("utf-8")
 
-                if message_bodies:
-                    DruncMessage.objects.bulk_create(
-                        [
-                            DruncMessage(timestamp=t, message=msg)
-                            for t, msg in zip(message_timestamps, message_bodies)
-                        ]
+                    message_records.append(
+                        DruncMessage(topic=message.topic, timestamp=time, message=body)
                     )
+
+                if message_records:
+                    DruncMessage.objects.bulk_create(message_records)
 
             # Remove expired messages from the database.
             message_timeout = timedelta(seconds=settings.MESSAGE_EXPIRE_SECS)
