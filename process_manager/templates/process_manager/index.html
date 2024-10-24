@@ -48,24 +48,26 @@
         {% csrf_token %}
         <a href="{% url 'process_manager:boot_process' %}"
            class="btn btn-primary">Boot</a>
-        <input type="submit"
-               value="Restart"
-               class="btn btn-success"
-               name="action"
-               id="restartButton"
-               onclick="return confirm('Restart selected processes?')">
-        <input type="submit"
-               value="Flush"
-               class="btn btn-warning"
-               name="action"
-               id="flushButton"
-               onclick="return confirm('Flush selected processes?')">
-        <input type="submit"
-               value="Kill"
-               class="btn btn-danger"
-               name="action"
-               id="killButton"
-               onclick="return confirm('Kill selected processes?')">
+        {% if perms.main.can_modify_processes %}
+          <input type="submit"
+                 value="Restart"
+                 class="btn btn-success"
+                 name="action"
+                 id="restartButton"
+                 onclick="return confirm('Restart selected processes?')">
+          <input type="submit"
+                 value="Flush"
+                 class="btn btn-warning"
+                 name="action"
+                 id="flushButton"
+                 onclick="return confirm('Flush selected processes?')">
+          <input type="submit"
+                 value="Kill"
+                 class="btn btn-danger"
+                 name="action"
+                 id="killButton"
+                 onclick="return confirm('Kill selected processes?')">
+        {% endif %}
         <button id="show-messages-button"
                 type="button"
                 class="btn btn-info"
