@@ -15,11 +15,30 @@
 {% endblock extra_css %}
 {% block extra_js %}
   <script language="JavaScript">
-  function toggle(source) {
-      checkboxes = document.getElementsByName('select');
-      for(var i in checkboxes)
-          checkboxes[i].checked = source.checked;
-  }
+        function toggle(source) {
+            const checkboxes = document.getElementsByName('select');
+            for (const checkbox of checkboxes) {
+                checkbox.checked = source.checked;
+            }
+            updateButtonState();
+        }
+
+        function updateButtonState() {
+            const checkboxes = document.getElementsByName('select');
+            const buttons = [
+                document.getElementById('restartButton'),
+                document.getElementById('flushButton'),
+                document.getElementById('killButton')
+            ];
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            buttons.forEach(button => button.disabled = !anyChecked);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.getElementsByName('select');
+            checkboxes.forEach(checkbox => checkbox.addEventListener('change', updateButtonState));
+            updateButtonState();
+        });
   </script>
 {% endblock extra_js %}
 {% block content %}
@@ -33,16 +52,19 @@
                value="Restart"
                class="btn btn-success"
                name="action"
+               id="restartButton"
                onclick="return confirm('Restart selected processes?')">
         <input type="submit"
                value="Flush"
                class="btn btn-warning"
                name="action"
+               id="flushButton"
                onclick="return confirm('Flush selected processes?')">
         <input type="submit"
                value="Kill"
                class="btn btn-danger"
                name="action"
+               id="killButton"
                onclick="return confirm('Kill selected processes?')">
         <button id="show-messages-button"
                 type="button"

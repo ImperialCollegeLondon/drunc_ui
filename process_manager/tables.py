@@ -57,5 +57,6 @@ class ProcessTable(tables.Table):
         """
         return mark_safe(
             f'<input type="checkbox" name="select" value="{value}" id="{value}-input" '
-            f'hx-preserve="true" class="row-checkbox" _="{row_checkbox_hyperscript}"'
+            f'hx-preserve="true" class="row-checkbox" _="{row_checkbox_hyperscript}" '
+            f'onchange="updateButtonState()">'
         )
