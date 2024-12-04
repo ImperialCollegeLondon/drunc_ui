@@ -8,6 +8,7 @@ app_name = "controller"
 
 partial_urlpatterns = [
     path("state_machine", partials.state_machine, name="state_machine"),
+    path("dialog", partials.dialog, name="dialog"),
 ]
 
 urlpatterns = [

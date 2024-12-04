@@ -1,0 +1,27 @@
+{% load crispy_forms_tags %}
+<dialog id="argsDialog"
+        class="dialog"
+        _="on keydown if the event's key is 'Escape' remove me">
+  {% if has_args %}
+    <h4>
+      Arguments to run transition: <b>{{ event }}</b>
+    </h4>
+  {% else %}
+    <h4>
+      Run the transition: <b>{{ event }}</b>
+    </h4>
+  {% endif %}
+  <form hx-post="{% url 'controller:state_machine' %}"
+        hx-target='#state-machine'>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="d-flex justify-content-between mb-3">
+      <input type="hidden" name="event" value="{{ event }}">
+      <button class="btn btn-danger w-50 mx-2"
+              type="button"
+              _="on click remove #argsDialog">Cancel</button>
+      <button class="btn btn-success w-50 mx-2" type="submit">Confirm transition</button>
+    </div>
+  </form>
+</dialog>
+<div _="on load call #argsDialog.showModal()"></div>

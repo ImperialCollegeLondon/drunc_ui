@@ -2,6 +2,7 @@ from http import HTTPStatus
 from random import choice
 
 import pytest
+from django.forms import Field
 from django.urls import reverse
 
 from controller import fsm
@@ -32,17 +33,58 @@ class TestFSMView(LoginRequiredTest):
     @pytest.mark.parametrize("state", fsm.STATES.keys())
     def test_non_empty_post(self, state, auth_client, mocker):
         """Tests basic calls of view method."""
+        from django.forms import Form
+
         mock_state = mocker.patch("controller.controller_interface.get_fsm_state")
         mock_send = mocker.patch("controller.controller_interface.send_event")
+        mock_form = mocker.patch("controller.forms.get_form_for_event")
 
         event = choice(fsm.STATES[state])
 
         mock_state.return_value = state
         mock_send.return_value = event
 
+        form = Form()
+        form.cleaned_data = {"arg1": 1, "arg2": 2}
+        mock_form.return_value = lambda _: form
+
+        # The form is not valid, so there should be an exception
+        with pytest.raises(ValueError, match="Invalid form:"):
+            auth_client.post(self.endpoint, data={"event": event})
+
+        # Now it is valid, so all good
+        form.is_valid = mocker.MagicMock()
+        form.is_valid.return_value = True
+
         response = auth_client.post(self.endpoint, data={"event": event})
         assert response.status_code == HTTPStatus.OK
         table = response.context["table"]
         assert isinstance(table, FSMTable)
         mock_state.assert_called_once()
-        mock_send.assert_called_once_with(event)
+        mock_send.assert_called_once_with(event, form.cleaned_data)
+
+
+class TestArgumentsDialogView(LoginRequiredTest):
+    """Test the process_manager.views.process_table view function."""
+
+    endpoint = reverse("controller:dialog")
+
+    @pytest.mark.parametrize(
+        "fields,has_args", [({}, False), ({"arg1": Field()}, True)]
+    )
+    def test_view(self, auth_client, mocker, fields, has_args):
+        """Tests basic calls of view method."""
+        from django.forms import Form
+
+        mock_form = mocker.patch("controller.forms.get_form_for_event")
+        event = "an_event"
+
+        form = Form()
+        form.fields = fields
+        mock_form.return_value = lambda: form
+        response = auth_client.post(self.endpoint, data={"event": event})
+        assert response.status_code == HTTPStatus.OK
+        form = response.context["form"]
+        assert isinstance(form, Form)
+        assert response.context["has_args"] == has_args
+        assert response.context["event"] == event

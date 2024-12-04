@@ -31,7 +31,7 @@ def test_toggle_button_current(mocker):
     assert isinstance(result, SafeString)
     assert result == (
         "<input type='submit' value=event name='event' hx-post=/mocked_url/ "
-        "hx-target='#state-machine' class='btn btn-success w-100 mx-2'>"
+        "hx-target='#arguments-dialog' class='btn btn-success w-100 mx-2'>"
     )
 
 
