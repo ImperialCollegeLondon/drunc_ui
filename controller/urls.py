@@ -1,10 +1,16 @@
 """Urls module for the controller app."""
 
-from django.urls import path
+from django.urls import include, path
 
-from . import views
+from .views import pages, partials
 
 app_name = "controller"
+
+partial_urlpatterns = [
+    path("state_machine", partials.state_machine, name="state_machine"),
+]
+
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", pages.index, name="index"),
+    path("partials/", include(partial_urlpatterns)),
 ]

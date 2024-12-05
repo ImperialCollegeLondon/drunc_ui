@@ -1,4 +1,4 @@
-"""Views module for the controller app."""
+"""Page views module for the controller app."""
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse

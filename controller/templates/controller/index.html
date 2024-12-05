@@ -13,8 +13,36 @@
       font-size: 0.875rem;
       line-height: 1.4;
     }
+    .flex-container {
+      display: flex;
+      gap: 15px;
+    }
+    .flex-container .fsm-panel {
+      flex: 1;
+    }
+    .flex-container .message-panel {
+      width: 30%;
+    }
   </style>
 {% endblock extra_css %}
 {% block content %}
-  {% include "main/messages.html" with topic="ERS" %}
+  <div class="container-fluid no-padding no-margin">
+    <div class="flex-container" id="main-content">
+      <!-- Finite state machine Panel -->
+      <div class="fst-panel">
+        <div class="card shadow-sm rounded">
+          <div class="card-header bg-primary text-white rounded-top mb-3">
+            <h5>Finite State Machine</h5>
+          </div>
+          <div class="card-body">
+            <div hx-get="{% url 'controller:state_machine' %}"
+                 hx-trigger="load"
+                 hx-target="#state-machine"></div>
+            <div id="state-machine"></div>
+          </div>
+        </div>
+      </div>
+      {% include "main/messages.html" with topic="ERS" %}
+    </div>
+  </div>
 {% endblock content %}
