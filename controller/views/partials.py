@@ -53,3 +53,13 @@ def dialog(request: HttpRequest) -> HttpResponse:
         ),
         template_name="controller/partials/arguments_dialog.html",
     )
+
+
+@login_required
+def app_tree_view(request: HttpRequest) -> HttpResponse:
+    """Renders the app tree view."""
+    return render(
+        request=request,
+        context=dict(tree=ci.get_app_tree()),
+        template_name="controller/partials/app_tree.html",
+    )

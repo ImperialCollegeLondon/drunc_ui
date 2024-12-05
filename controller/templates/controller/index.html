@@ -25,6 +25,12 @@
     }
   </style>
 {% endblock extra_css %}
+{% block extra_js %}
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/themes/light.css" />
+  <script type="module"
+          src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/shoelace-autoloader.js"></script>
+{% endblock extra_js %}
 {% block content %}
   <div class="container-fluid no-padding no-margin">
     <div class="flex-container" id="main-content">
@@ -39,6 +45,19 @@
                  hx-trigger="load"
                  hx-target="#state-machine"></div>
             <div id="state-machine"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fst-panel">
+        <div class="card shadow-sm rounded">
+          <div class="card-header bg-primary text-white rounded-top mb-3">
+            <h5>Application Tree</h5>
+          </div>
+          <div class="card-body">
+            <div hx-get="{% url 'controller:app_tree' %}"
+                 hx-trigger="load"
+                 hx-target="#app_tree"></div>
+            <div id="app_tree"></div>
           </div>
         </div>
       </div>

@@ -1,0 +1,6 @@
+<sl-tree-item expanded>
+{{ tree.name }}
+{% for child in tree.children %}
+  {% include "controller/partials/tree_item.html" with tree=child %}
+{% endfor %}
+</sl-tree-item>

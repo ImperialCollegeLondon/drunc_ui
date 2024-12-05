@@ -88,3 +88,28 @@ class TestArgumentsDialogView(LoginRequiredTest):
         assert isinstance(form, Form)
         assert response.context["has_args"] == has_args
         assert response.context["event"] == event
+
+
+class TestAppTreeView(LoginRequiredTest):
+    """Test the controller.views.partials.app_tree_view view function."""
+
+    endpoint = reverse("controller:app_tree")
+
+    def test_get_tree(self, auth_client, mocker):
+        """Tests basic calls of view method."""
+        mock_tree = mocker.patch("controller.controller_interface.get_app_tree")
+        apps = {
+            "name": "root",
+            "children": [
+                {
+                    "name": "child1",
+                    "children": [{"name": "grandchild1", "children": []}],
+                }
+            ],
+        }
+        mock_tree.return_value = apps
+
+        response = auth_client.post(self.endpoint)
+        assert response.status_code == HTTPStatus.OK
+        tree = response.context["tree"]
+        assert tree == apps

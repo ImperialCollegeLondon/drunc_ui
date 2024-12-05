@@ -1,6 +1,7 @@
 """Module providing functions to interact with the drunc controller."""
 
 import functools
+from threading import Lock
 from typing import Any
 
 from django.conf import settings
@@ -9,7 +10,7 @@ from drunc.controller.controller_driver import ControllerDriver
 from drunc.utils.grpc_utils import pack_to_any
 from drunc.utils.shell_utils import create_dummy_token_from_uname
 from drunc.utils.utils import get_control_type_and_uri_from_connectivity_service
-from druncschema.controller_pb2 import Argument, FSMCommand, FSMResponseFlag
+from druncschema.controller_pb2 import Argument, FSMCommand, FSMResponseFlag, Status
 from druncschema.generic_pb2 import bool_msg, float_msg, int_msg, string_msg
 from druncschema.request_response_pb2 import Description
 
@@ -21,6 +22,9 @@ MSG_TYPE = {
 }
 """Mapping of argument types to their protobuf message types."""
 
+connectivity_lock = Lock()
+"""Lock to ensure only one thread is accessing the connectivity service at a time."""
+
 
 @functools.cache
 def get_controller_uri() -> str:
@@ -29,11 +33,13 @@ def get_controller_uri() -> str:
     Returns:
         str: The URI of the root controller.
     """
-    csc = ConnectivityServiceClient(settings.CSC_SESSION, settings.CSC_URL)
-    _, uri = get_control_type_and_uri_from_connectivity_service(
-        csc,
-        name="root-controller",
-    )
+    global connectivity_lock
+    with connectivity_lock:
+        csc = ConnectivityServiceClient(settings.CSC_SESSION, settings.CSC_URL)
+        _, uri = get_control_type_and_uri_from_connectivity_service(
+            csc,
+            name="root-controller",
+        )
     return uri
 
 
@@ -61,23 +67,27 @@ def get_fsm_state() -> str:
 def send_event(  # type: ignore[misc]
     event: str,
     arguments: dict[str, Any],
-) -> FSMResponseFlag:
+) -> None:
     """Send an event to the controller.
 
     Args:
         event: The event to send.
         arguments: The arguments for the event.
 
-    Returns:
-        FSMResponseFlag: The flag returned by the controller. 0 if the event was
-            successful, 1-4 if the event failed.
+    Raises:
+        RuntimeError: If the event failed, reporting the flag.
     """
     controller = get_controller_driver()
     controller.take_control()
     command = FSMCommand(
         command_name=event, arguments=process_arguments(event, arguments)
     )
-    return controller.execute_fsm_command(command).flag
+    response = controller.execute_fsm_command(command)
+    if response.flag != FSMResponseFlag.FSM_EXECUTED_SUCCESSFULLY:
+        raise RuntimeError(
+            f"Event '{event}' failed with flag {FSMResponseFlag(response.flag)} "
+            f"and message '{response.data}'"
+        )
 
 
 def get_arguments(event: str) -> list[Argument]:
@@ -123,3 +133,28 @@ def process_arguments(  # type: ignore[misc]
         processed[arg.name] = pack_to_any(MSG_TYPE[arg.type](value=arguments[arg.name]))
 
     return processed
+
+
+AppType = dict[str, str | list["AppType"]]
+"""Type alias for the application tree."""
+
+
+def get_app_tree(status: Status | None = None) -> AppType:
+    """Get the application tree for the controller.
+
+    It recursively gets the tree of applications and their children.
+
+    Args:
+        status: The status to get the tree for. If None, the root controller status is
+            used as the starting point.
+
+    Returns:
+        The application tree. A the top level, it contains the name of the application
+        and a list of its children. Each child is a dictionary with the same structure.
+    """
+    status = status or get_controller_status()
+
+    return {
+        "name": status.name,
+        "children": [get_app_tree(app) for app in status.children],
+    }

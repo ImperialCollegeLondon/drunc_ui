@@ -174,7 +174,7 @@ def test_send_event(mocker):
 
     mock_FSMCommand = mocker.patch("controller.controller_interface.FSMCommand")
 
-    result = send_event(event, arguments)
+    send_event(event, arguments)
 
     mock_get_controller_driver.assert_called_once()
     mock_controller.take_control.assert_called_once()
@@ -183,4 +183,44 @@ def test_send_event(mocker):
         command_name=event, arguments={"arg1": "packed_value1"}
     )
     mock_controller.execute_fsm_command.assert_called_once()
-    assert result == 0
+
+
+def test_get_app_tree(mocker):
+    """Test the get_app_tree function."""
+    from controller.controller_interface import get_app_tree
+
+    class MockStatus:
+        def __init__(self, name, children):
+            self.name = name
+            self.children = children
+
+    mock_get_controller_status = mocker.patch(
+        "controller.controller_interface.get_controller_status"
+    )
+
+    # Test with no status provided (default case)
+    root_status = MockStatus("root", [])
+    mock_get_controller_status.return_value = root_status
+    result = get_app_tree()
+    assert result == {"name": "root", "children": []}
+    mock_get_controller_status.assert_called_once()
+
+    # Test with a provided status
+    child_status = MockStatus("child", [])
+    root_status_with_child = MockStatus("root", [child_status])
+    result = get_app_tree(root_status_with_child)
+    assert result == {"name": "root", "children": [{"name": "child", "children": []}]}
+
+    # Test with nested children
+    grandchild_status = MockStatus("grandchild", [])
+    child_status_with_grandchild = MockStatus("child", [grandchild_status])
+    root_status_with_nested_children = MockStatus(
+        "root", [child_status_with_grandchild]
+    )
+    result = get_app_tree(root_status_with_nested_children)
+    assert result == {
+        "name": "root",
+        "children": [
+            {"name": "child", "children": [{"name": "grandchild", "children": []}]}
+        ],
+    }

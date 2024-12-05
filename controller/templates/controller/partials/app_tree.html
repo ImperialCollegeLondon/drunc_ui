@@ -1,0 +1,11 @@
+<sl-tree class="custom-icons">
+<sl-icon name="plus-square" slot="expand-icon"></sl-icon>
+<sl-icon name="dash-square" slot="collapse-icon"></sl-icon>
+{% include "controller/partials/tree_item.html" with tree=tree %}
+</sl-tree>
+<style>
+        .custom-icons sl-tree-item::part(expand-button) {
+          /* Disable the expand/collapse animation */
+          rotate: none;
+        }
+</style>
