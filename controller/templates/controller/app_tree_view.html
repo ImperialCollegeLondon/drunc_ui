@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% block title %}
+  Controller
+{% endblock title %}
+{% block extra_css %}
+  <style>
+    .flex-container {
+      display: flex;
+      gap: 15px;
+    }
+    .flex-container .fsm-panel {
+      flex: 1;
+    }
+  </style>
+{% endblock extra_css %}
+{% block content %}
+  <div class="container-fluid no-padding no-margin">
+    <div class="flex-container" id="main-content">
+      <!-- Application tree panel -->
+      <div class="fst-panel">
+        <div class="card shadow-sm rounded">
+          <div class="card-header bg-primary text-white rounded-top mb-3">
+            <h5>Application tree</h5>
+          </div>
+          <div class="card-body">
+            <div hx-get="{% url 'controller:app_tree_table' %}"
+                 hx-trigger="load"
+                 hx-target="#app-tree-table"></div>
+            <div id="app-tree-table"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

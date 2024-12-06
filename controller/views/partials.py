@@ -56,10 +56,21 @@ def dialog(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def app_tree_view(request: HttpRequest) -> HttpResponse:
-    """Renders the app tree view."""
+def app_tree_view_summary(request: HttpRequest) -> HttpResponse:
+    """Renders the app tree view summary."""
     return render(
         request=request,
-        context=dict(tree=ci.get_app_tree()),
-        template_name="controller/partials/app_tree.html",
+        context=dict(tree=ci.get_app_tree(request.user.username)),
+        template_name="controller/partials/app_tree_summary_partial.html",
+    )
+
+
+@login_required
+def app_tree_view_table(request: HttpRequest) -> HttpResponse:
+    """View that renders the app tree view table."""
+    table = tables.AppTreeTable(ci.get_app_tree(request.user.username).to_list())
+    return render(
+        request=request,
+        context=dict(table=table),
+        template_name="controller/partials/app_tree_table_partial.html",
     )
