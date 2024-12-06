@@ -87,6 +87,9 @@ system.
 
 ### drunc
 
+This service is only used as part of the `drunc` Docker Compose profile. See the [Docker
+Setup overview] for details.
+
 Runs the various components of the DUNE control system that the web app interfaces with.
 Drunc has a complex set of dependencies collectively referred to the as the DUNE DAQ
 environment (see the [DUNE DAQ documentation] for more information). The upshot is that
@@ -103,6 +106,11 @@ To ensure a consistent developer experience we pin the development image to a fi
 image. The base image is manually tagged and pushed to the
 [imperialcollegelondon/dunedaq_dev_environment] package with a tag including the date of
 the nightly.
+
+The primary function of the drunc image is to run the Drunc Process Manager which is
+then responsible for booting the processes of a Drunc session. The Process Manager
+launches processes on localhost via SSH. To support this the `drunc` service also starts
+an SSH server with keys configured to allow passwordless connection to localhost.
 
 #### Updating the drunc base image
 
@@ -138,7 +146,28 @@ The following changes are needed to update the version of the base image used fo
 
 ### drunc-lite
 
+This service is only used as part of the `drunc-lite` Docker Compose profile. See the
+[Docker Setup overview] for details.
+
+This image contains a parred down version of the drunc python package containing only
+the pip installable dependencies. As it avoids the full complex dependency stack of
+Drunc it can be based on a standard (and much smaller) Python image. The main limitation
+of this image is that it cannot boot Drunc sessions and hence is only useful for working
+with dummy processes in the Process Manager UI.
+
+Similarly to the full `drunc` service, it starts the Drunc Process Manager and provides
+an SSH server to allow the booting of dummy processes.
+
+[Docker Setup overview]: index.md#docker-setup
+
 ### app
+
+Runs the `drunc_ui` codebase. This is a fairly simple image that installs this project's
+dependencies and starts the Django development server. The development database is
+stored in the `db` volume to persist beyond an individual container lifespan. The
+project directory from the host is mounted into the `app` service which allows the
+Django development server's auto-reload mechanism to detect changes and support rapid
+iterative development.
 
 ### kafka_consumer
 
