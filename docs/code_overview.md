@@ -63,11 +63,6 @@ These messages are displayed in several places in the web UIs. Receiving message
 Kafka requires a long-running process to act as a consumer and make messages available
 within the web application.
 
-The consumer is implemented as a [Django admin command] and can be run as
-`python manage.py kafka_consumer`. This makes messages available to the web application
-by storing them in the database. This command is also responsible for pruning messages
-from the database after a configurable retention period.
-
 ## Authentication
 
 In the absence of a defined authentication mechanism for use in production, the project
@@ -97,7 +92,6 @@ database technology and supports [multiple different databases] that may be used
 deployment.
 
 [django]: https://www.djangoproject.com/
-[django admin command]: https://docs.djangoproject.com/en/5.1/howto/custom-management-commands/
 [django apps]: https://docs.djangoproject.com/en/5.1/ref/applications/
 [django authentication system]: https://docs.djangoproject.com/en/5.1/topics/auth/default/
 [django groups]: https://docs.djangoproject.com/en/5.1/topics/auth/default/#groups
