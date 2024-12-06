@@ -504,14 +504,14 @@ develop = false
 
 [package.dependencies]
 click = "*"
-click-shell = "*"
+click_shell = "*"
 googleapis-common-protos = "*"
 grpcio = "*"
 grpcio-status = "*"
-grpcio-tools = "*"
+grpcio_tools = "*"
 gunicorn = "*"
 kafka-python = "*"
-nest-asyncio = "*"
+nest_asyncio = "*"
 rich = "*"
 sh = "*"
 
@@ -521,8 +521,8 @@ develop = ["ipdb", "ipython"]
 [package.source]
 type = "git"
 url = "https://github.com/DUNE-DAQ/drunc.git"
-reference = "f068eaccb840da03a104adba2da3f27454c218d5"
-resolved_reference = "f068eaccb840da03a104adba2da3f27454c218d5"
+reference = "1848d8494d5583e1a551134d3cd3a38aea810cd0"
+resolved_reference = "1848d8494d5583e1a551134d3cd3a38aea810cd0"
 
 [[package]]
 name = "druncschema"
@@ -537,7 +537,7 @@ develop = false
 googleapis-common-protos = "*"
 grpcio = "*"
 grpcio-status = "*"
-grpcio-tools = "*"
+grpcio_tools = "*"
 
 [package.extras]
 develop = ["ipdb", "ipython"]
@@ -545,8 +545,8 @@ develop = ["ipdb", "ipython"]
 [package.source]
 type = "git"
 url = "https://github.com/DUNE-DAQ/druncschema.git"
-reference = "a07226fa9c3a4329b4c38e084c913cb1e2db0b4e"
-resolved_reference = "a07226fa9c3a4329b4c38e084c913cb1e2db0b4e"
+reference = "91dbf64ef91c31df9fc1d2872d07f484880e5921"
+resolved_reference = "91dbf64ef91c31df9fc1d2872d07f484880e5921"
 
 [[package]]
 name = "editorconfig"
@@ -2007,4 +2007,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "4cd3ff7a5ce8f7f5e8d9a92be5fabf05be871326d2527c00f7358e5eede99efe"
+content-hash = "7430f82a52e1a4c4c61a334751739130680ec5717c279df4e2d74976c34ab48c"
