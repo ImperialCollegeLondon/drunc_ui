@@ -50,9 +50,9 @@ importable by Python. Then set the environment variable `DJANGO_SETTINGS_MODULE`
 import path of the file. For instance, if you created `drunc_ui/settings/deployment.py`
 then you would set `DJANGO_SETTINGS_MODULE=drunc_ui.settings.deployment`. An example
 settings file containing the minimum required configuration is given below. Also see the
-Django settings reference documentation.
+Django [settings reference documentation].
 
-<https://docs.djangoproject.com/en/5.1/ref/settings/>
+[settings reference documentation]: https://docs.djangoproject.com/en/5.1/ref/settings/
 
 ```python
 # extend the production settings by importing them
@@ -60,7 +60,8 @@ import os
 from drunc_ui.settings._production import *
 
 ALLOWED_HOSTS = ["hostname.for.access.com"]
-ADMINS = [] # will receive emails in event of system errors
+# Admins will receive emails in event of system errors
+ADMINS = [("Chris Cave-Ayland", "c.cave-ayland@imperial.ac.uk")]
 
 # email settings
 # the SMTP backend is configured in _production.py, you can specify something else but
