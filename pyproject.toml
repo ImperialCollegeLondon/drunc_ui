@@ -42,6 +42,10 @@ mkdocs-gen-files = "^0.5.0"
 mkdocs-literate-nav = "^0.6.1"
 mkdocs-section-index = "^0.3.9"
 
+
+[tool.poetry.group.postgres.dependencies]
+psycopg = { extras = ["binary"], version = "^3.2.3" }
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
@@ -72,7 +76,7 @@ DJANGO_SETTINGS_MODULE = "drunc_ui.settings"
 FAIL_INVALID_TEMPLATE_VARS = true
 
 [tool.ruff]
-exclude = ["*/migrations"]
+exclude = ["*/migrations", "example_deployment/*"]
 target-version = "py312"
 
 [tool.ruff.lint]
