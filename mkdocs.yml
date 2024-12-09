@@ -40,4 +40,5 @@ nav:
   - Process Manager UI: process_manager.md
   - Controller UI: controller.md
   - Development: development.md
+  - Deployment: deployment.md
   - Code Reference: reference/
