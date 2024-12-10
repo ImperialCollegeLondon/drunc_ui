@@ -51,13 +51,15 @@
       <div class="fst-panel">
         <div class="card shadow-sm rounded">
           <div class="card-header bg-primary text-white rounded-top mb-3">
-            <h5>Application Tree</h5>
+            <a href="{% url 'controller:app_tree' %}">
+              <h5>Application Tree</h5>
+            </a>
           </div>
           <div class="card-body">
-            <div hx-get="{% url 'controller:app_tree' %}"
+            <div hx-get="{% url 'controller:app_tree_summary' %}"
                  hx-trigger="load"
-                 hx-target="#app_tree"></div>
-            <div id="app_tree"></div>
+                 hx-target="#app_tree_summary"></div>
+            <div id="app_tree_summary"></div>
           </div>
         </div>
       </div>

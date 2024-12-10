@@ -9,7 +9,7 @@ if [[ "$CSC_SESSION" == "lr-session" ]]; then
     SESSION=$CSC_SESSION
 else
     CONFIG="config/daqsystemtest/example-configs.data.xml"
-    SESSION="local-2x3-config"
+    SESSION="local-1x1-config"
 fi
 
 drunc-process-manager-shell grpc://localhost:10054 boot $CONFIG $SESSION

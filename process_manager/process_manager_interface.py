@@ -107,3 +107,21 @@ def boot_process(user: str, data: dict[str, str | int]) -> None:
         data: the data for the process.
     """
     return asyncio.run(_boot_process(user, data))
+
+
+def get_hostnames(user: str) -> dict[str, str]:
+    """Get the hostnames of the processes for the given user.
+
+    Args:
+        user: The user to get the hostnames for.
+
+    Returns:
+        The hostnames of the processes for the given user.
+    """
+    session = get_session_info(user)
+    hostnames = {}
+    for process_instance in session.data.values:
+        hostnames[process_instance.process_description.metadata.name] = (
+            process_instance.process_description.metadata.hostname
+        )
+    return hostnames
