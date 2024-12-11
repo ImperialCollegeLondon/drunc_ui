@@ -130,7 +130,7 @@ The following changes are needed to update the version of the base image used fo
    the versions in the image. This is usually the latest commit in the `develop` branch
    of those repositories but you should check that no new commits have been added since
    the nightly was built.
-1. Regenerate the Poetry lock file.
+1. Regenerate the Poetry lock file with `poetry lock`.
 1. Run `docker compose up --build` to start the development stack.
 1. Test the new image. Make sure that you can boot a test session, complete the full set
    of FSM transitions and whatever new functionality the nightly is being for is working
@@ -183,3 +183,5 @@ from the database after a configurable retention period.
 
 As may be expected the `kafka_consumer` service is dependent on the `kafka` service and
 will need to be replaced if Kafka is replaced.
+
+[django admin command]: https://docs.djangoproject.com/en/5.1/howto/custom-management-commands/
