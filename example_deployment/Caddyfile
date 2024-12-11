@@ -1,0 +1,4 @@
+https://localhost {
+  tls /cert /key
+  reverse_proxy {$HOST}:{$PORT}
+}

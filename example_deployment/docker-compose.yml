@@ -1,0 +1,59 @@
+services:
+  app:
+    build: ..
+    command:
+      - bash
+      - -c
+      - |
+        python manage.py migrate
+        python manage.py collectstatic --noinput
+        gunicorn --capture-output --access-logfile="-" --error-logfile="-" --worker-class gthread --workers 4 --threads 1 drunc_ui.wsgi -b 0.0.0.0:8000
+    volumes:
+      - ./deployment_settings.py:/usr/src/app/drunc_ui/settings/deployment.py
+    environment:
+      - DJANGO_SETTINGS_MODULE=drunc_ui.settings.deployment
+      - SECRET_KEY=un)6fepeihit@4@ljucw$7qg2mt6ws((2kes#sql2!=q89^915
+      - PROCESS_MANAGER_URL=drunc_host:10054
+      - CSC_URL=connectivity_server_host:5000
+      - CSC_SESSION=local-2x3-config
+      - DATABASE_PASSWORD=m6&hn47opji-3w912c
+      - DJANGO_LOG_LEVEL=INFO
+  kafka_consumer:
+    build: ..
+    command:
+      - bash
+      - -c
+      - |
+        python manage.py kafka_consumer --debug
+    environment:
+      - KAFKA_ADDRESS=kafka_broker:9092
+      - DJANGO_SETTINGS_MODULE=drunc_ui.settings.deployment
+      - SECRET_KEY=requiredbutnotused
+      - DATABASE_PASSWORD=m6&hn47opji-3w912c
+    volumes:
+      - ./deployment_settings.py:/usr/src/app/drunc_ui/settings/deployment.py
+  proxy:
+    image: caddy:2-alpine
+    depends_on:
+      - app
+    environment:
+      - HOST=app
+      - PORT=8000
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./tls/certificate.pem:/cert:ro
+      - ./tls/key.pem:/key:ro
+  db:
+    image: postgres:17
+    environment:
+      - POSTGRES_DB=drunc_ui
+      - POSTGRES_USER=drunc_ui
+      - POSTGRES_PASSWORD=m6&hn47opji-3w912c
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
