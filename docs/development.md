@@ -124,8 +124,8 @@ The following changes are needed to update the version of the base image used fo
    `docker tag ghcr.io/dune-daq/nightly-release-alma9:development_v5
    ghcr.io/imperialcollegelondon/dunedaq_dev_environment:nightly-241114`.
 1. Update `drunc_docker_service/Dockerfile` to the reflect the date of the new nightly.
-   You'll need to change the `NIGHTLY_TAG` environment variable and the name of the base
-   image.
+   You'll need to change the `NIGHTLY_TAG` environment variable (keeping the format
+   `NFD_DEV_YYMMDD_A9`) and the name of the base image.
 1. Update the pinned commits of `drunc` and `druncschema` in `pyproject.toml` to match
    the versions in the image. This is usually the latest commit in the `develop` branch
    of those repositories but you should check that no new commits have been added since
