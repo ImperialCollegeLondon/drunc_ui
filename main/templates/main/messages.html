@@ -20,14 +20,14 @@
                type="search"
                name="search"
                placeholder="Search messages..."
-               hx-get="{% url 'main:messages' topic|default:"ALL" %}"
+               hx-get="{% url 'main:messages' topic %}"
                hx-trigger="input changed delay:500ms, every 1s"
                hx-target="#message-list"
                hx-include="#filter-form">
         <!-- Severity Filter Dropdown -->
         <select name="severity"
                 class="form-select mb-2"
-                hx-get="{% url 'main:messages' topic|default:"ALL" %}"
+                hx-get="{% url 'main:messages' topic %}"
                 hx-target="#message-list"
                 hx-include="#filter-form">
           <option value="">All Severities</option>
@@ -39,7 +39,7 @@
       </form>
       <div id="message-list"
            class="list-group"
-           hx-get="{% url 'main:messages' topic|default:"ALL" %}"
+           hx-get="{% url 'main:messages' topic %}"
            hx-trigger="load"></div>
     </div>
   </div>

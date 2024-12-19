@@ -16,5 +16,6 @@ partial_urlpatterns = [
 urlpatterns = [
     path("", pages.index, name="index"),
     path("app_tree", pages.app_tree_view, name="app_tree"),
+    path("ers_logs", pages.ers_logs, name="ers_logs"),
     path("partials/", include(partial_urlpatterns)),
 ]

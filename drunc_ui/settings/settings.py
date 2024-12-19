@@ -157,8 +157,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 KAFKA_ADDRESS = os.getenv("KAFKA_ADDRESS", "kafka:9092")
 
 KAFKA_TOPIC_REGEX = {
-    # ALL matches all topics.
-    "ALL": "^.*$",
     # PROCMAN matches topics of the form "control.<session>.process_manager".
     "PROCMAN": "^control\..+\.process_manager$",
     # ERS matches only the topic "erskafka-reporting".

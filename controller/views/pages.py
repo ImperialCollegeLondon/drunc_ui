@@ -18,3 +18,9 @@ def app_tree_view(request: HttpRequest) -> HttpResponse:
         request=request,
         template_name="controller/app_tree_view.html",
     )
+
+
+@login_required
+def ers_logs(request: HttpRequest) -> HttpResponse:
+    """View that renders the ERS log messages page."""
+    return render(request=request, template_name="controller/ers_logs.html")

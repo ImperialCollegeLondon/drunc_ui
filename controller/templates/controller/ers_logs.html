@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+{% block title %}
+  Controller - ERS Logs
+{% endblock title %}
+{% block extra_css %}
+  <style>
+    #hide-messages-button {
+      filter: invert(1);
+      float: right;
+    }
+    .message-item {
+      font-family: 'Arial', sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.4;
+    }
+    .flex-container {
+      display: flex;
+      gap: 15px;
+    }
+    .flex-container .fsm-panel {
+      flex: 1;
+    }
+    .flex-container .message-panel {
+      width: 100%;
+    }
+  </style>
+{% endblock extra_css %}
+{% block content %}
+  <div class="container-fluid no-padding no-margin">
+    <div class="flex-container" id="main-content">{% include "main/messages.html" with topic="ERS" %}</div>
+  </div>
+{% endblock content %}
