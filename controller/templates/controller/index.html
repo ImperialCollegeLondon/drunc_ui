@@ -30,6 +30,7 @@
         href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/themes/light.css" />
   <script type="module"
           src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/shoelace-autoloader.js"></script>
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';</script>
 {% endblock extra_js %}
 {% block content %}
   <div class="container-fluid no-padding no-margin">
@@ -45,6 +46,22 @@
                  hx-trigger="load"
                  hx-target="#state-machine"></div>
             <div id="state-machine"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fst-panel">
+        <div class="card shadow-sm rounded">
+          <div class="card-header bg-primary text-white rounded-top mb-3">
+            <h5>Flowchart</h5>
+          </div>
+          <div class="card-body">
+            <pre class="mermaid">
+              flowchart TD
+              {% comment %} A[Start] --> B{Decision?} {% endcomment %}
+              {% comment %} B -- Yes --> C[Task 1] {% endcomment %}
+              {% comment %} B -- No --> D[Task 2] {% endcomment %}
+              {% comment %} C & D --> E[End] {% endcomment %}
+            </pre>
           </div>
         </div>
       </div>
