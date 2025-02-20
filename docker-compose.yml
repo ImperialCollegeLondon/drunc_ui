@@ -12,6 +12,7 @@ services:
     volumes:
       - .:/usr/src/app
       - db:/usr/src/app/db
+      - ${DRUNC_LOCAL_DEPS:-.}:/mnt/local_deps
     environment:
       - PROCESS_MANAGER_URL=drunc:10054
       - CSC_URL
@@ -28,6 +29,8 @@ services:
         drunc-process-manager --log-level debug /process-manager-kafka.json 10054
     expose:
       - 10054
+    volumes:
+      - ${DRUNC_LOCAL_DEPS:-.}:/mnt/local_deps
     environment:
       - CSC_SESSION
     depends_on:
@@ -79,6 +82,7 @@ services:
     volumes:
       - .:/usr/src/app
       - db:/usr/src/app/db
+      - ${DRUNC_LOCAL_DEPS:-.}:/mnt/local_deps
     depends_on:
       kafka:
         condition: service_healthy
