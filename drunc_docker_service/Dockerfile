@@ -36,3 +36,6 @@ ADD wibeth_output_all_zeros.bin /cvmfs/dunedaq.opensciencegrid.org/assets/files/
 
 ADD boot_test_session.sh /
 RUN chmod a+x /boot_test_session.sh
+
+ADD boot_session_manager.sh /
+RUN chmod a+x /boot_session_manager.sh

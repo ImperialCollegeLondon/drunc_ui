@@ -15,9 +15,10 @@ services:
       - ${DRUNC_LOCAL_DEPS:-.}:/mnt/local_deps
     environment:
       - PROCESS_MANAGER_URL=drunc:10054
+      - SESSION_MANAGER_URL=drunc:50000
       - CSC_URL
       - CSC_SESSION
-  drunc:
+  drunc_pm:
     build: ./drunc_docker_service/
     profiles:
       - drunc
@@ -29,6 +30,24 @@ services:
         drunc-process-manager --log-level debug /process-manager-kafka.json 10054
     expose:
       - 10054
+    volumes:
+      - ${DRUNC_LOCAL_DEPS:-.}:/mnt/local_deps
+    environment:
+      - CSC_SESSION
+    depends_on:
+      kafka:
+        condition: service_healthy
+  drunc_sm:
+    build: ./drunc_docker_service/
+    profiles:
+      - drunc
+    command:
+      - bash
+      - -c
+      - |
+        /boot_session_manager.sh
+    expose:
+      - 50000
     volumes:
       - ${DRUNC_LOCAL_DEPS:-.}:/mnt/local_deps
     environment:

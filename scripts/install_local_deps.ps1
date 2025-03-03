@@ -11,5 +11,6 @@ foreach ($dep in $dependencies) {
     # Execute commands on different services
     docker compose exec --user root app bash -c "$cmd"
     docker compose exec --user root kafka_consumer bash -c "$cmd"
-    docker compose exec drunc bash -c "$env_cmd && $cmd"
+    docker compose exec drunc_pm bash -c "$env_cmd && $cmd"
+    docker compose exec drunc_sm bash -c "$env_cmd && $cmd"
 }
