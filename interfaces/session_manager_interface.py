@@ -1,5 +1,17 @@
 """Interface for the session manager endpoint."""
 
+from django.conf import settings
+from drunc.session_manager.session_manager_driver import SessionManagerDriver
+from drunc.utils.shell_utils import create_dummy_token_from_uname
+
+
+def get_session_manager_driver() -> SessionManagerDriver:
+    """Get a ProcessManagerDriver instance."""
+    token = create_dummy_token_from_uname()
+    return SessionManagerDriver(
+        settings.SESSION_MANAGER_URL, token=token, aio_channel=True
+    )
+
 
 def get_configs() -> list[dict[str, str]]:
     """Get the available configurations for the controller.
@@ -34,23 +46,8 @@ def get_configs() -> list[dict[str, str]]:
 def get_sessions() -> list[dict[str, str]]:
     """Get the active sessions in the controller.
 
-    TODO: Placeholder function with hardcoded values. Pull data dynamically when the
-    relevant endpoint is implemented.
-
     Returns:
         List of dictionaries indicating the session name and the actor name (i.e.
         typically, the user who boots the session).
     """
-    actors = ["Alice", "Bob", "Gandalf"]
-    names = [
-        "a8098c1a-f86e-11da-bd1a-00112444be1e",
-        "6fa459ea-ee8a-3ca4-894e-db77e160355e",
-        "16fd2706-8baf-433b-82eb-8c7fada847da",
-    ]
-    return [
-        {
-            "name": name,
-            "actor": actor,
-        }
-        for name, actor in zip(names, actors)
-    ]
+    return get_session_manager_driver().list_all_sessions()
