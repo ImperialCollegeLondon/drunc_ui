@@ -59,7 +59,7 @@ def get_fsm_state() -> str:
     return get_controller_status().data.state
 
 
-def send_event(  # type: ignore[misc]
+def send_event(  # type: ignore[explicit-any]
     event: str,
     arguments: dict[str, Any],
 ) -> None:
@@ -106,7 +106,7 @@ def get_arguments(event: str) -> list[Argument]:
     return command.arguments
 
 
-def process_arguments(  # type: ignore[misc]
+def process_arguments(  # type: ignore[explicit-any]
     event: str,
     arguments: dict[str, Any],
 ) -> dict[str, Any]:

@@ -20,7 +20,7 @@ class Command(BaseCommand):
         parser.add_argument("-m", "--message", default="NO_MESSAGE")
         parser.add_argument("-s", "--severity", default="INFO")
 
-    def handle(self, *args: Any, **kwargs: Any) -> None:  # type: ignore[misc]
+    def handle(self, *args: Any, **kwargs: Any) -> None:  # type: ignore[explicit-any]
         """Command business logic."""
         topic = kwargs["topic"]
         message = kwargs["message"]

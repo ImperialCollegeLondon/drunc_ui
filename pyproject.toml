@@ -11,8 +11,8 @@ authors = [
 python = ">=3.10,<3.12"
 django = "^5.1"
 whitenoise = "^6.9.0"
-drunc = { git = "https://github.com/DUNE-DAQ/drunc.git", rev = "1848d8494d5583e1a551134d3cd3a38aea810cd0" }
-druncschema = { git = "https://github.com/DUNE-DAQ/druncschema.git", rev = "91dbf64ef91c31df9fc1d2872d07f484880e5921" }
+drunc = { git = "https://github.com/DUNE-DAQ/drunc.git", rev = "606a97385b09ad22593acb63283c64cee4cb271a" }
+druncschema = { git = "https://github.com/DUNE-DAQ/druncschema.git", rev = "e8c7272addc807bc0c32315863c44858b59080ab" }
 django-tables2 = "^2.7.5"
 django-bootstrap5 = "^25.1"
 pytest-asyncio = "^0.25.3"

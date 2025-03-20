@@ -49,7 +49,7 @@ async def get_session_info(pmd: ProcessManagerDriver) -> ProcessInstanceList:
 async def main() -> ProcessInstanceList:
     """Run the script."""
     token = create_dummy_token_from_uname()
-    pmd = ProcessManagerDriver("drunc:10054", token=token, aio_channel=True)
+    pmd = ProcessManagerDriver("drunc_pm:10054", token=token, aio_channel=True)
 
     await create_session(pmd)
     return await get_session_info(pmd)

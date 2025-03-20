@@ -14,10 +14,11 @@ services:
       - db:/usr/src/app/db
       - ${DRUNC_LOCAL_DEPS:-.}:/mnt/local_deps
     environment:
-      - PROCESS_MANAGER_URL=drunc:10054
-      - SESSION_MANAGER_URL=drunc:50000
+      - PROCESS_MANAGER_URL=drunc_pm:10054
+      - SESSION_MANAGER_URL=drunc_sm:50000
       - CSC_URL
       - CSC_SESSION
+      - CSC_SESSION_NAME
   drunc_pm:
     build: ./drunc_docker_service/
     profiles:

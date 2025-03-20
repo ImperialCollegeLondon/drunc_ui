@@ -35,7 +35,7 @@ BROADCAST_TYPE_SEVERITY = {
 }
 
 
-def from_kafka_message(message: Any) -> DruncMessage:  # type: ignore [misc]
+def from_kafka_message(message: Any) -> DruncMessage:  # type: ignore [explicit-any]
     """Process a Kafka style of message.
 
     Args:
@@ -57,7 +57,7 @@ def from_kafka_message(message: Any) -> DruncMessage:  # type: ignore [misc]
     )
 
 
-def from_ers_message(message: Any) -> DruncMessage:  # type: ignore [misc]
+def from_ers_message(message: Any) -> DruncMessage:  # type: ignore [explicit-any]
     """Process a ERS style of message.
 
     Args:
@@ -88,7 +88,11 @@ class Command(BaseCommand):
         """Add commandline options."""
         parser.add_argument("--debug", action="store_true")
 
-    def handle(self, debug: bool = False, **kwargs: Any) -> None:  # type: ignore[misc]
+    def handle(  # type: ignore[explicit-any]
+        self,
+        debug: bool = False,
+        **kwargs: Any,
+    ) -> None:
         """Command business logic."""
         consumer = KafkaConsumer(bootstrap_servers=[settings.KAFKA_ADDRESS])
         consumer.subscribe(pattern=f"({'|'.join(settings.KAFKA_TOPIC_REGEX.values())})")

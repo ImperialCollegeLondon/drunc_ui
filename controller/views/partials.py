@@ -41,7 +41,7 @@ def make_fsm_flowchart(states: dict[str, dict[str, str]], current_state: str) ->
 def state_machine(request: HttpRequest) -> HttpResponse:
     """Triggers a chan."""
     event = request.POST.get("event", None)
-    arguments: dict[str, Any] = {  # type: ignore[misc]
+    arguments: dict[str, Any] = {  # type: ignore[explicit-any]
         k: v
         for k, v in request.POST.items()
         if k not in ["csrfmiddlewaretoken", "event"]
