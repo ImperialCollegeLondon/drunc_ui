@@ -8,14 +8,14 @@
 {% endblock extra_css %}
 {% block extra_js %}
   <script type="text/hyperscript">
-  behavior disableActionButton
-    on click[target.matches('.row-checkbox')] from elsewhere or click[target.matches('#header-checkbox')] from elsewhere
-      if <.row-checkbox:checked /> is empty
-        set me.disabled to true
-      else
-        set me.disabled to false
+    behavior disableActionButton
+      on click[target.matches('.row-checkbox')] from elsewhere or click[target.matches('#header-checkbox')] from elsewhere
+        if <.row-checkbox:checked /> is empty
+          set me.disabled to true
+        else
+          set me.disabled to false
+      end
     end
-  end
   </script>
 {% endblock extra_js %}
 {% block content %}
@@ -54,7 +54,6 @@
                        onclick="return confirm('Kill selected processes?')"
                        disabled
                        _="install disableActionButton">
-                <!-- Consistent Show Messages Button -->
                 <button id="show-messages-button"
                         type="button"
                         class="btn btn-info w-100 ms-2"
