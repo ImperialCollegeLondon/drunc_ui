@@ -159,6 +159,7 @@ INSTALLED_APPS += ["django_bootstrap5"]
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
 
 PROCESS_MANAGER_URL = os.getenv("PROCESS_MANAGER_URL", "localhost:10054")
+SESSION_MANAGER_URL = os.getenv("SESSION_MANAGER_URL", "localhost:50000")
 CSC_URL = os.getenv("CSC_URL", "drunc_pm:5000")
 CSC_SESSION = os.getenv("CSC_SESSION", "local-1x1-config")
 CSC_SESSION_NAME = os.getenv("CSC_SESSION_NAME", CSC_SESSION)

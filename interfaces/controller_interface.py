@@ -77,7 +77,7 @@ def send_event(  # type: ignore[explicit-any]
     command = FSMCommand(
         command_name=event, arguments=process_arguments(event, arguments)
     )
-    response = controller.execute_fsm_command(command)
+    response = controller.execute_fsm_command(arguments=command)
     if response.flag != FSMResponseFlag.FSM_EXECUTED_SUCCESSFULLY:
         raise RuntimeError(
             f"Event '{event}' failed with flag {FSMResponseFlag(response.flag)} "
