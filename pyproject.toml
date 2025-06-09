@@ -37,7 +37,7 @@ pytest-django = "^4.11.1"
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.6.1"
 mkdocstrings = "^0.29.1"
-mkdocstrings-python = "^1.16.11"
+mkdocstrings-python = "^1.16.12"
 mkdocs-material = "^9.6.14"
 mkdocs-gen-files = "^0.5.0"
 mkdocs-literate-nav = "^0.6.2"
