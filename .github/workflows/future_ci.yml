@@ -1,0 +1,13 @@
+name: Test in develop
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '* 5 * * 0' # every Sunday at 5:00 UTC
+
+jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+    with:
+      python_version: '3.11'
+      use_develop: true

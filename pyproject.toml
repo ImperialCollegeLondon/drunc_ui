@@ -8,7 +8,7 @@ authors = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
+python = ">=3.10,<3.12"
 django = "^5.2"
 whitenoise = "^6.9.0"
 drunc = { git = "https://github.com/DUNE-DAQ/drunc.git", rev = "d411037139c52554bb2d1db307d520d1184d4e96" }
