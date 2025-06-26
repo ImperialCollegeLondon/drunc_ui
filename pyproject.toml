@@ -3,7 +3,6 @@ name = "drunc_ui"
 version = "0.1.0"
 description = "[Description for project.]"
 authors = [
-    "Ryan Smith <ryan.smith@imperial.ac.uk>",
     "Imperial College London RSE Team <ict-rse-team@imperial.ac.uk>",
 ]
 

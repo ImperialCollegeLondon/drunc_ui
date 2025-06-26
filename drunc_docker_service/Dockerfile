@@ -1,4 +1,4 @@
-FROM ghcr.io/imperialcollegelondon/dunedaq_dev_environment:nightly-250320
+FROM ghcr.io/imperialcollegelondon/dunedaq_dev_environment:nightly-250626
 
 RUN yum install -y openssh-server && yum clean all
 
@@ -6,7 +6,7 @@ RUN yum install -y openssh-server && yum clean all
 SHELL ["/bin/bash", "-c"]
 
 WORKDIR /basedir
-ENV NIGHTLY_TAG=NFD_DEV_250320_A9
+ENV NIGHTLY_TAG=NFD_DEV_250626_A9
 
 # setup for the the dune development environment that provides the full set of
 # dependencies required for booting of the controller test session
