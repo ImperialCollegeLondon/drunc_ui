@@ -54,6 +54,18 @@
 
   </style>
 {% endblock extra_css %}
+{% block extra_js %}
+  <script type="text/hyperscript">
+    behavior disableActionButton
+      on click[target.matches('.row-checkbox')] from elsewhere
+        if <.row-checkbox:checked /> is empty
+          set me.disabled to true
+        else
+          set me.disabled to false
+      end
+    end
+  </script>
+{% endblock extra_js %}
 {% block content %}
   <div class="container-fluid no-padding no-margin">
     <div class="flex-container" id="main-content">
@@ -64,6 +76,15 @@
             <h5>Active sessions</h5>
           </div>
           <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+              <input type="submit"
+                     value="Take control"
+                     class="btn btn-success w-100 mx-2"
+                     name="action"
+                     onclick="return confirm('Take control of selected session?')"
+                     disabled
+                     _="install disableActionButton">
+            </div>
             <div hx-get="{% url 'session_manager:active_sessions_table' %}"
                  hx-trigger="load, every 1s"
                  hx-target="#active_sessions_table"></div>

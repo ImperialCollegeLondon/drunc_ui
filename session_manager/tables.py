@@ -3,6 +3,16 @@
 from typing import ClassVar
 
 import django_tables2 as tables
+from django.utils.safestring import mark_safe
+
+
+class LabelledCheckBoxColumn(tables.CheckBoxColumn):
+    """A CheckBoxColumn where the header is a label."""
+
+    @property
+    def header(self) -> str:
+        """The value used for the column heading."""
+        return self.verbose_name
 
 
 class ActiveSessions(tables.Table):
@@ -30,6 +40,18 @@ class ActiveSessions(tables.Table):
         },
     )
 
+    select = LabelledCheckBoxColumn(
+        accessor="name",
+        orderable=False,
+        verbose_name="Select",
+        attrs={
+            "th": {"class": "header-style small-text"},
+            "td__input": {
+                "class": "form-check-input form-check-input-lg text-center",
+            },
+        },
+    )
+
     class Meta:
         """Table meta options for rendering behaviour and styling."""
 
@@ -37,6 +59,15 @@ class ActiveSessions(tables.Table):
         attrs: ClassVar[dict[str, str]] = {
             "class": "table table-hover table-responsive small-text",
         }
+
+    def render_select(self, value: str) -> str:
+        """Customize behavior of checkboxes in the select column."""
+        return mark_safe(
+            f'<input type="checkbox" name="select" value="{value}" '
+            f'id="{value}-input" hx-preserve="true" '
+            'class="form-check-input form-check-input-lg row-checkbox" '
+            'style="transform: scale(1.5);" '
+        )
 
 
 class AvailableConfigs(tables.Table):
