@@ -63,9 +63,9 @@ class ActiveSessions(tables.Table):
     def render_select(self, value: str) -> str:
         """Customize behavior of checkboxes in the select column."""
         return mark_safe(
-            f'<input type="checkbox" name="select" value="{value}" '
+            f'<input type="radio" name="select session" value="{value}" '
             f'id="{value}-input" hx-preserve="true" '
-            'class="form-check-input form-check-input-lg row-checkbox" '
+            'class="form-check-input form-check-input-lg session-checkbox" '
             'style="transform: scale(1.5);" '
         )
 
@@ -95,6 +95,18 @@ class AvailableConfigs(tables.Table):
         },
     )
 
+    select = LabelledCheckBoxColumn(
+        accessor="file",
+        orderable=False,
+        verbose_name="Select",
+        attrs={
+            "th": {"class": "header-style small-text"},
+            "td__input": {
+                "class": "form-check-input form-check-input-lg text-center",
+            },
+        },
+    )
+
     class Meta:
         """Table meta options for rendering behaviour and styling."""
 
@@ -102,3 +114,12 @@ class AvailableConfigs(tables.Table):
         attrs: ClassVar[dict[str, str]] = {
             "class": "table table-hover table-responsive small-text",
         }
+
+    def render_select(self, value: str) -> str:
+        """Customize behavior of checkboxes in the select column."""
+        return mark_safe(
+            f'<input type="radio" name="select config" value="{value}" '
+            f'id="{value}-input" hx-preserve="true" '
+            'class="form-check-input form-check-input-lg config-checkbox" '
+            'style="transform: scale(1.5);" '
+        )

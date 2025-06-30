@@ -56,9 +56,17 @@
 {% endblock extra_css %}
 {% block extra_js %}
   <script type="text/hyperscript">
-    behavior disableActionButton
-      on click[target.matches('.row-checkbox')] from elsewhere
-        if <.row-checkbox:checked /> is empty
+    behavior disableActionButtonSession
+      on click[target.matches('.session-checkbox')] from elsewhere
+        if <.session-checkbox:checked /> is empty
+          set me.disabled to true
+        else
+          set me.disabled to false
+      end
+    end
+    behavior disableActionButtonConfig
+      on click[target.matches('.config-checkbox')] from elsewhere
+        if <.config-checkbox:checked /> is empty
           set me.disabled to true
         else
           set me.disabled to false
@@ -83,7 +91,7 @@
                      name="action"
                      onclick="return confirm('Take control of selected session?')"
                      disabled
-                     _="install disableActionButton">
+                     _="install disableActionButtonSession">
             </div>
             <div hx-get="{% url 'session_manager:active_sessions_table' %}"
                  hx-trigger="load, every 1s"
@@ -99,11 +107,20 @@
             <h5>Available configurations</h5>
           </div>
           <div class="card-body">
-            <div hx-get="{% url 'session_manager:available_config_table' %}"
-                 hx-trigger="load, every 1s"
-                 hx-target="#available_config_table"></div>
-            <div id="available_config_table"></div>
+            <div class="d-flex justify-content-between mb-3">
+              <input type="submit"
+                     value="Boot session"
+                     class="btn btn-success w-100 mx-2"
+                     name="action"
+                     onclick="return confirm('Boot session based on the selected configuration?')"
+                     disabled
+                     _="install disableActionButtonConfig">
+            </div>
           </div>
+          <div hx-get="{% url 'session_manager:available_config_table' %}"
+               hx-trigger="load, every 1s"
+               hx-target="#available_config_table"></div>
+          <div id="available_config_table"></div>
         </div>
       </div>
     </div>
