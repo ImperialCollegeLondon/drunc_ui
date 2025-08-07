@@ -31,8 +31,11 @@
             <form method="post" action="{% url 'process_manager:process_action' %}">
               {% csrf_token %}
               <div class="d-flex justify-content-between mb-3">
-                <a href="{% url 'process_manager:boot_process' %}"
-                   class="btn btn-primary w-100 me-2">Boot</a>
+                {% if debug %}
+                  <!-- Only show boot button in debug mode -->
+                  <a href="{% url 'process_manager:boot_process' %}"
+                     class="btn btn-primary w-100 me-2">Boot</a>
+                {% endif %}
                 <input type="submit"
                        value="Restart"
                        class="btn btn-success w-100 mx-2"

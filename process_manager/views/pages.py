@@ -2,6 +2,7 @@
 
 import uuid
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import HttpRequest, HttpResponse
@@ -17,7 +18,11 @@ from ..forms import BootProcessForm
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
     """View that renders the index/home page with process table."""
-    return render(request=request, template_name="process_manager/index.html")
+    return render(
+        request=request,
+        template_name="process_manager/index.html",
+        context={"debug": settings.DEBUG},
+    )
 
 
 @login_required
